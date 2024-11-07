@@ -61,7 +61,7 @@ The project is divided into two main parts:
 ### Steps
 1. **Clone the repository**:
    ```bash
-   git clone <repository_url>
+   git clone `https://github.com/TheUzair/NurtureTech.git`
    ```
 2. **Navigate to the project directory**:
    ```bash
@@ -134,12 +134,6 @@ The project is divided into two main parts:
 - **POST /auth/login**: Log in a user.
 - **POST /auth/register**: Register a new user.
 
-### Children
-- **GET /children**: Get all children.
-- **POST /children**: Add a new child.
-- **PUT /children/:id**: Update child information.
-- **DELETE /children/:id**: Remove a child.
-
 ### Real-time Updates
 
 The system uses **Socket.IO** to provide real-time updates for changes in:
@@ -180,7 +174,7 @@ JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=1h
 
 # Server Configuration
-PORT=5000
+PORT=3000
 ```
 
 *Ensure that sensitive information like `JWT_SECRET` and database credentials are kept secure and not committed to version control.*
@@ -190,4 +184,4 @@ PORT=5000
 Contributions are welcome! If you have suggestions for improvements or new features, feel free to fork the repository and create a Pull Request. Please ensure that your code follows the project’s coding standards and is well-documented.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
