@@ -17,7 +17,7 @@ const server = http.createServer(app);
 
 const corsOptions = {
   origin: [
-    'https://nurturetech.onrender.com/',
+    'https://nurturetech.onrender.com',
     'http://localhost:5173',
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -25,11 +25,19 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
+
 app.use(cors(corsOptions));
 app.use(express.json());
 
 const io = new Server(server, {
-  cors: corsOptions,
+  cors: {
+    origin: [
+      'https://nurturetech.onrender.com',
+      'http://localhost:5173',
+    ],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
 });
 
 let lastCheckTime = new Date();
