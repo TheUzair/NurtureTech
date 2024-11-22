@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Register() {
   const { t } = useTranslation(); 
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -17,7 +19,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = 'http://localhost:3000/api/register'; 
+      const url = `${API_URL}/api/register`; 
 
       const response = await axios.post(url, formData);
       setMessage(response.data.msg);

@@ -7,7 +7,8 @@ import { ThemeContext } from '../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const API_URL = import.meta.env.VITE_API_URL;
+const socket = io(`${API_URL}`);
 
 const EnrollmentOverview = () => {
   const [enrollmentData, setEnrollmentData] = useState([]);
@@ -18,7 +19,7 @@ const EnrollmentOverview = () => {
   // Fetch enrollment data based on selected year
   const fetchEnrollmentData = async (year) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/enrollments?year=${year}`);
+      const response = await axios.get(`${API_URL}/api/enrollments?year=${year}`);
       setEnrollmentData(response.data);
     } catch (error) {
       console.error("Error fetching enrollment data", error);

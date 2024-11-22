@@ -6,7 +6,8 @@ import { ThemeContext } from '../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const API_URL = import.meta.env.VITE_API_URL;
+const socket = io(`${API_URL}`);
 
 const FinancialOverview = () => {
   const [financialData, setFinancialData] = useState([]);
@@ -17,7 +18,7 @@ const FinancialOverview = () => {
   // Fetch financial data based on selected year
   const fetchFinancialData = async (year) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/finances?year=${year}`);
+      const response = await axios.get(`${API_URL}/api/finances?year=${year}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching financial data:", error);

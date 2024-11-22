@@ -7,7 +7,8 @@ import { ThemeContext } from '../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const API_URL = import.meta.env.VITE_API_URL;
+const socket = io(`${API_URL}`);
 
 const CaregiversOverview = () => {
   const [caregiversData, setCaregiversData] = useState([]);
@@ -18,8 +19,7 @@ const CaregiversOverview = () => {
   // Fetch caregiver data based on selected year
   const fetchCaregiversData = async (year) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/caregivers?year=${year}`);
-      // const response = await axios.get(http://localhost:3000/api/caregivers?year=${year}&t=${new Date().getTime()});
+      const response = await axios.get(`${API_URL}/api/caregivers?year=${year}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching caregiver data:", error);

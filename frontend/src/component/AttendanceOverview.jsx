@@ -7,7 +7,8 @@ import { ThemeContext } from '../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const API_URL = import.meta.env.VITE_API_URL;
+const socket = io(`${API_URL}`);
 
 const AttendanceOverview = () => {
   const [attendanceData, setAttendanceData] = useState([]);
@@ -18,7 +19,7 @@ const AttendanceOverview = () => {
 
   const fetchAttendanceData = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/attendance');
+      const response = await axios.get(`${API_URL}/api/attendance`);
       setAttendanceData(response.data);
     } catch (error) {
       console.error("Error fetching attendance stats", error);
@@ -27,7 +28,7 @@ const AttendanceOverview = () => {
 
   const fetchPredictionData = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/attendance/predict-attendance');
+      const response = await axios.get(`${API_URL}/api/attendance/predict-attendance`);
       setPredictAttendance(response.data);
     } catch (error) {
       console.error("Error fetching attendance prediction", error);

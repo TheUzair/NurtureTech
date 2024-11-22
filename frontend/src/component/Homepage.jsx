@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Homepage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -17,8 +19,8 @@ const Homepage = () => {
         e.preventDefault();
         try {
             const url = isLogin
-                ? 'http://localhost:3000/api/login'
-                : 'http://localhost:3000/api/register';
+                ? `${API_URL}/api/login`
+                : `${API_URL}/api/register`;
 
             const response = await axios.post(url, formData, {
                 headers: {
