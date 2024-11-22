@@ -17,6 +17,7 @@ const server = http.createServer(app);
 
 const corsOptions = {
   origin: [
+    'https://nurturetech.onrender.com/'
     'http://localhost:5173',
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
