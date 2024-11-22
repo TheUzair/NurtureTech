@@ -116,19 +116,6 @@ The frontend application will be available at `http://localhost:5173`.
 
 ---
 
-## API Documentation
-
-### Authentication
-- **POST /auth/login**: Log in a user.
-- **POST /auth/register**: Register a new user.
-
-### Resource APIs
-- **GET /children**: Fetch all children.
-- **POST /children**: Add a new child.
-- Similar endpoints for caregivers, finances, enrollments, and attendance.
-
----
-
 ## Real-time Updates
 
 Socket.IO is used to push updates in real-time for:
