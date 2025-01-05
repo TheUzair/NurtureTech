@@ -1,4 +1,4 @@
-# NurtureTech Project
+# NurtureTech
 
 ## Overview
 The NurtureTech project is a full-stack application designed to manage and track attendance, caregiver information, child enrollments, and financial records for childcare or educational settings. This application includes a backend server for API management and a frontend client for user interaction, featuring real-time updates, caching, and robust authentication mechanisms.
