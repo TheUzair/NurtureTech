@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import Overview from './Overview';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,6 +11,7 @@ function Login() {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
   const [isLogin, setIsLogin] = useState(true); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -28,7 +30,8 @@ function Login() {
       if (isLogin) {
         localStorage.setItem('token', response.data.access_token); 
         setMessage(t('login_success')); 
-        navigate('/dashboard');
+        setIsLoggedIn(true);
+        navigate('/overview');
       } else {
         setMessage(response.data.msg);
       }

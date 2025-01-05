@@ -17,27 +17,39 @@ const LanguageSelector = () => {
 
   return (
     <div className="relative inline-block p-1">
-      {/* Dropdown for selecting languages */}
       <select
-        value={i18n.language} // Set the selected language
-        onChange={handleChange} // Update language when selected
-        className="block appearance-none w-full bg-cyan-700 dark:bg-gray-700 border border-cyan-700 dark:border-gray-700 text-white font-medium dark:text-cyan-50 py-[6px] px-4 pr-8 rounded-lg leading-tight focus:outline-none"
+        value={i18n.language}
+        onChange={handleChange}
+        className="block appearance-none w-full 
+                 bg-white/10 hover:bg-white/20 
+                 dark:bg-gray-700 dark:hover:bg-gray-600
+                 border border-transparent
+                 text-white font-medium
+                 dark:text-gray-200
+                 py-[6px] px-4 pr-8 rounded-lg 
+                 leading-tight focus:outline-none 
+                 focus:ring-2 focus:ring-white/20
+                 transition-colors"
       >
-        {/* Render options from the languages array */}
         {languages.map((lng) => (
           <option 
             key={lng.value} 
             value={lng.value}
-            className={`bg-cyan-100 text-black dark:bg-gray-800 dark:text-white`}
+            className="bg-indigo-500 text-white 
+                     dark:bg-gray-800 dark:text-white"
           >
             {lng.label}
           </option>
         ))}
       </select>
 
-      {/* Icon for dropdown */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-white dark:text-gray-300">
-        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+      <div className="pointer-events-none absolute inset-y-0 right-0 
+                    flex items-center pr-4 text-white/70 dark:text-gray-300">
+        <svg 
+          className="fill-current h-4 w-4" 
+          xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 20 20"
+        >
           <path d="M7 10l5 5 5-5H7z" />
         </svg>
       </div>

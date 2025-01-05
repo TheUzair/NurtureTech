@@ -20,7 +20,6 @@ const ChildrenOverview = () => {
   const fetchChildrenData = async (year) => {
     try {
       const response = await axios.get(`${API_URL}/api/children?year=${year}`);
-      // const response = await axios.get(`http://localhost:3000/api/children?year=${year}&t=${new Date().getTime()}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching children data:", error);
@@ -37,7 +36,6 @@ const ChildrenOverview = () => {
     fetchData();
   
     socket.on('child_updates', async (update) => {
-      // console.log(`Update received from backend: ${JSON.stringify(update)}`);
       const updatedData = await fetchChildrenData(childrenSelectedYear);
       setChildrenData(updatedData);
     });
@@ -102,7 +100,6 @@ const ChildrenOverview = () => {
       </div>
 
       <div className="stats flex justify-evenly m-4">
-        {/* Display dynamic children stats */}
         <div className="registered flex flex-col items-center">
           <div className="w-2 h-2 bg-fuchsia-600 rounded-full mb-2"></div>
           <div className="text-gray-400 dark:text-gray-300 font-semibold"> {t('registered')}</div>
