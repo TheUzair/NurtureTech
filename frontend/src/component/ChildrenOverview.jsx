@@ -68,7 +68,7 @@ const ChildrenOverview = () => {
             onChange={handleChildrenYearChange}
           >
             <option value="2024">2024</option>
-            <option value="2023">2023</option>
+            <option value="2025">2025</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-700 dark:text-gray-300">
             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
