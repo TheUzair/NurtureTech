@@ -1,8 +1,8 @@
-import connection from '../config/db.js';
+import pool from '../config/db.js';
 
 const getAllCaregivers = async () => {
-  const [caregivers] = await connection.execute('SELECT * FROM caregiver');
+  const { rows: caregivers } = await pool.query('SELECT * FROM caregiver');
   return caregivers;
 };
 
-export default getAllCaregivers
+export default getAllCaregivers;

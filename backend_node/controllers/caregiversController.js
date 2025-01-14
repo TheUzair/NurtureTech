@@ -1,4 +1,4 @@
-import connection from '../config/db.js';
+import pool from '../config/db.js';
 import { redisClient } from '../utils/cache.js'; 
 
 export const getAllCaregivers = async (req, res) => {
@@ -12,16 +12,17 @@ export const getAllCaregivers = async (req, res) => {
       return res.status(200).json(JSON.parse(cachedData));
     }
 
+    // PostgreSQL query with parameterized inputs
     let query = 'SELECT id, name, status, year FROM caregiver';
     const params = [];
     
     if (year) {
-      query += ' WHERE year = ?';
+      query += ' WHERE year = $1';
       params.push(year);
     }
 
     // Execute the query with parameters if any
-    const [caregivers] = await connection.execute(query, params);
+    const { rows: caregivers } = await pool.query(query, params);
 
     const caregiversList = caregivers.map(caregiver => ({
       id: caregiver.id,
@@ -35,7 +36,7 @@ export const getAllCaregivers = async (req, res) => {
 
     return res.status(200).json(caregiversList);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching caregivers:', error);
     res.status(500).json({
       error: {
         message: 'Failed to retrieve caregivers',

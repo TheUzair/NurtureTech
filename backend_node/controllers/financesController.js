@@ -1,4 +1,4 @@
-import connection from '../config/db.js';
+import pool from '../config/db.js';
 import { redisClient } from '../utils/cache.js';
 import { format } from 'date-fns'; // date-fns for date formatting
 
@@ -23,8 +23,9 @@ export const getAllFinances = async (req, res) => {
     console.log('End Date:', endDate);
 
     // Query the Financial table with date range based on the year
-    const query = 'SELECT * FROM financial WHERE date BETWEEN ? AND ?';
-    const [financialData] = await connection.execute(query, [startDate, endDate]);
+    const query = 'SELECT * FROM financial WHERE date BETWEEN $1 AND $2';
+    const values = [startDate, endDate];
+    const { rows: financialData } = await pool.query(query, values);
 
     if (financialData.length === 0) {
       return res.status(404).json({ message: "No financial data found" });
@@ -44,7 +45,7 @@ export const getAllFinances = async (req, res) => {
         record.amount *= 0.8;  // Reduce field trip costs by 20%
       }
     });
-    
+
     const expenseCategories = ['Medical expenses', 'Sports activities', 'Extra classes', 'Monthly fee', 'Field trip'];
     const totalRevenue = financialDataList.reduce((sum, record) => sum + (record.amount > 0 ? record.amount : 0), 0);
     const totalExpenses = financialDataList
@@ -62,12 +63,12 @@ export const getAllFinances = async (req, res) => {
     };
 
     // Invalidate cache and update with new data
-    await redisClient.setEx(cacheKey, 60, JSON.stringify(result)); // Set cache expiration for 60 seconds
+    await redisClient.setEx(cacheKey, 60, JSON.stringify(result)); 
 
     return res.status(200).json(result);
 
   } catch (error) {
-    console.error(error);
+    console.error('Error retrieving financial summary:', error);
     return res.status(500).json({
       error: {
         message: 'Failed to retrieve financial summary',

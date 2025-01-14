@@ -25,7 +25,6 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-
 app.use(cors(corsOptions));
 app.use(express.json());
 
@@ -44,13 +43,13 @@ let lastCheckTime = new Date();
 
 setInterval(async () => {
   try {
-    const [rows] = await pool.query(
-      'SELECT * FROM change_log WHERE changed_at > ? ORDER BY changed_at DESC',
+    const { rows } = await pool.query(
+      `SELECT * FROM change_log WHERE changed_at > $1 ORDER BY changed_at DESC`,
       [lastCheckTime]
     );
 
     if (rows.length > 0) {
-      rows.forEach(async (row) => {
+      for (const row of rows) {
         if (row.table_name === 'child') {
           const cacheKey = `children_list_${row.year}`;
           await redisClient.del(cacheKey); // Invalidate child data cache
@@ -74,21 +73,20 @@ setInterval(async () => {
           changed_id: row.changed_id,
           timestamp: row.changed_at,
         });
-      });
+      }
 
       // Update last check time to the timestamp of the latest change
-      lastCheckTime = new Date();
+      lastCheckTime = new Date(rows[0].changed_at);
     }
 
     // Clean up old entries from change_log periodically
     await pool.query(
-      'DELETE FROM change_log WHERE changed_at < NOW() - INTERVAL 1 HOUR'
+      `DELETE FROM change_log WHERE changed_at < NOW() - INTERVAL '1 hour'`
     );
   } catch (error) {
     console.error('Error fetching from change_log:', error);
   }
 }, 5000); // Check every 5 seconds
-
 
 // Socket.IO connection
 io.on('connection', (socket) => {

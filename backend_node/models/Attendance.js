@@ -1,8 +1,8 @@
-import connection from '../config/db.js';
+import pool from '../config/db.js';
 
 const getAllAttendanceRecords = async () => {
-  const [attendanceRecords] = await connection.execute('SELECT * FROM attendance');
+  const { rows: attendanceRecords } = await pool.query('SELECT * FROM attendance');
   return attendanceRecords;
 };
 
-export default getAllAttendanceRecords
+export default getAllAttendanceRecords;

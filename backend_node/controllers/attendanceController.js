@@ -1,7 +1,8 @@
-import connection from '../config/db.js';
+import pool from '../config/db.js';
 import { redisClient } from '../utils/cache.js';
 import { format, startOfWeek, endOfWeek, subWeeks } from 'date-fns';
 
+// Fetch all attendance records
 export const getAllAttendance = async (req, res) => {
   try {
     const cacheKey = 'attendance_list';
@@ -12,16 +13,16 @@ export const getAllAttendance = async (req, res) => {
     }
 
     const query = 'SELECT * FROM attendance';
-    const [attendanceRecords] = await connection.execute(query);
+    const { rows: attendanceRecords } = await pool.query(query);
 
-    const attendanceList = attendanceRecords.map(record => ({
+    const attendanceList = attendanceRecords.map((record) => ({
       id: record.id,
       child_id: record.child_id,
       date: record.date.toISOString(),
       status: record.status,
     }));
 
-    await redisClient.setEx(cacheKey, 5, JSON.stringify(attendanceList)); 
+    await redisClient.setEx(cacheKey, 300, JSON.stringify(attendanceList)); // Cache for 5 minutes
 
     return res.status(200).json(attendanceList);
   } catch (error) {
@@ -36,6 +37,7 @@ export const getAllAttendance = async (req, res) => {
   }
 };
 
+// Helper function to get the start and end of the week
 const getWeekRange = (date) => {
   return {
     start: startOfWeek(date, { weekStartsOn: 1 }),
@@ -43,15 +45,18 @@ const getWeekRange = (date) => {
   };
 };
 
+// Fetch attendance count for a specific date range
 const getAttendanceCount = async (startDate, endDate) => {
   const query = `
-    SELECT COUNT(*) AS count FROM attendance 
-    WHERE date >= ? AND date <= ? AND status IN ('on-time', 'late attendance')
+    SELECT COUNT(*) AS count 
+    FROM attendance 
+    WHERE date >= $1 AND date <= $2 AND status IN ('on-time', 'late attendance')
   `;
-  const [result] = await connection.execute(query, [format(startDate, 'yyyy-MM-dd'), format(endDate, 'yyyy-MM-dd')]);
-  return result[0].count;
+  const { rows } = await pool.query(query, [format(startDate, 'yyyy-MM-dd'), format(endDate, 'yyyy-MM-dd')]);
+  return parseInt(rows[0].count, 10);
 };
 
+// Predict attendance change percentage between weeks
 export const predictAttendance = async (req, res) => {
   try {
     const today = new Date();
