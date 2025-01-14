@@ -23,4 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment files
 backend_node/.env
+
+backend_node/.env.production
+
+frontend/.env
+frontend/.env.production
+
+backend-deployment.zip
